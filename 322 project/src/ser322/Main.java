@@ -8,11 +8,11 @@ public class Main {
         // This is a scanner we can use for user input.
         Scanner inputScanner = new Scanner(System.in);
 
-        mainMenu(inputScanner);
+        mainMenu(inputScanner, args);
 
     }
 
-    public static void mainMenu(Scanner inputScanner) {
+    public static void mainMenu(Scanner inputScanner, String[] args) {
         // Let the user know what we want
         System.out.println("Welcome to our music database.");
         printMainMenu();
@@ -24,7 +24,7 @@ public class Main {
             // TODO: update this as more menus are added.
 
             if (inInt == 1) {
-                Artists.artistMenu(inputScanner);
+                Artists.artistMenu(inputScanner, args);
 
             } else {
                 System.out.println(

@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Artists {
 
-    public static void artistMenu(Scanner inputScanner) {
+    public static void artistMenu(Scanner inputScanner, String[] args) {
         System.out.println("Welcome to the Artist menu");
         printArtistMenuOptions();
 
@@ -35,10 +35,11 @@ public class Artists {
                 System.out.println(
                         "Sorry, you did not select a valid menu option.");
                 System.out.println();
-                printArtistMenuOptions();
-
-                inInt = Integer.parseInt(inputScanner.next());
             }
+
+            printArtistMenuOptions();
+
+            inInt = Integer.parseInt(inputScanner.next());
         }
 
     }
@@ -56,6 +57,7 @@ public class Artists {
         System.out.println("8: Remove an artist from a song");
         System.out.println("9: Remove an artist from a band");
         System.out.println("10: Change the name of an artist");
+        System.out.println();
 
     }
 
