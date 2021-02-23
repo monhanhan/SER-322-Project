@@ -15,12 +15,7 @@ public class Main {
     public static void mainMenu(Scanner inputScanner) {
         // Let the user know what we want
         System.out.println("Welcome to our music database.");
-        System.out.println("Please make a selection");
-        System.out.println();
-        System.out.println("0: Exit System");
-        System.out.println("1: Artists");
-
-        System.out.println();
+        printMainMenu();
 
         int inInt = Integer.parseInt(inputScanner.next());
         // TODO: Add code for the next menu level.
@@ -34,13 +29,11 @@ public class Main {
             } else {
                 System.out.println(
                         "I'm sorry, you have not selected a valid option.");
-                System.out.println("Please make a selection");
-                System.out.println();
-                System.out.println("0: Exit System");
-                System.out.println("1: Artists");
-                inInt = Integer.parseInt(inputScanner.next());
 
             }
+            printMainMenu();
+            inInt = Integer.parseInt(inputScanner.next());
+
         }
 
         // If we got here it is because the user has chosen to exit.
@@ -48,6 +41,18 @@ public class Main {
         inputScanner.close();
         // Close the program.
         System.exit(0);
+
+    }
+
+    private static void printMainMenu() {
+        // TODO: as new options are added to the main menu we can add them here
+        // so that we don't have to edit so many places.
+        System.out.println("Main Menu");
+        System.out.println("Please make a selection");
+        System.out.println();
+        System.out.println("0: Exit System");
+        System.out.println("1: Artists");
+        System.out.println();
 
     }
 
