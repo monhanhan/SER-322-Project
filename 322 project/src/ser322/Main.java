@@ -20,8 +20,34 @@ public class Main {
         System.out.println("0: Exit System");
         System.out.println("1: Artists");
 
+        System.out.println();
+
         int inInt = Integer.parseInt(inputScanner.next());
         // TODO: Add code for the next menu level.
+
+        while (inInt != 0) {
+            // TODO: update this as more menus are added.
+
+            if (inInt == 1) {
+                Artists.artistMenu(inputScanner);
+
+            } else {
+                System.out.println(
+                        "I'm sorry, you have not selected a valid option.");
+                System.out.println("Please make a selection");
+                System.out.println();
+                System.out.println("0: Exit System");
+                System.out.println("1: Artists");
+                inInt = Integer.parseInt(inputScanner.next());
+
+            }
+        }
+
+        // If we got here it is because the user has chosen to exit.
+        // Close our input scanner.
+        inputScanner.close();
+        // Close the program.
+        System.exit(0);
 
     }
 
