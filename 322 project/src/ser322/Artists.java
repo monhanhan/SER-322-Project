@@ -849,14 +849,16 @@ public class Artists {
         BufferedReader stdin = new BufferedReader(
                 new InputStreamReader(System.in));
 
-        String artistName = "";
+        String artistName = "'";
 
         try {
-            artistName = stdin.readLine();
+            artistName = artistName + stdin.readLine();
         } catch (IOException e) {
             System.out.println(
                     "Something went wrong with taking your artist name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
         }
+
+        artistName = artistName + "'";
 
         String _url = args[0];
         try {
@@ -868,8 +870,7 @@ public class Artists {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "UPDATE ARTIST\\n\" + \"SET name = ? \\n\"\n"
-                            + "                    + \"WHERE artist_id = ?");
+                    "UPDATE ARTIST SET name = ? WHERE artist_id = ?");
 
             stmt.setString(1, artistName);
             stmt.setInt(2, artistId);
