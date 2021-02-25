@@ -263,7 +263,6 @@ public class Artists {
                 System.out.println("Oh-oh! Connection leaked!");
             }
         }
-
     }
 
     private static void listBands(Scanner inputScanner, String[] args) {
