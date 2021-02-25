@@ -527,14 +527,15 @@ public class Bands {
         BufferedReader stdin = new BufferedReader(
                 new InputStreamReader(System.in));
 
-        String bandName = "";
+        String bandName = "'";
 
         try {
-            bandName = stdin.readLine();
+            bandName = bandName + stdin.readLine();
         } catch (IOException e) {
             System.out.println(
                     "Something went wrong with taking your artist name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
         }
+        bandName = bandName + "'";
 
         String _url = args[0];
         try {
