@@ -9,7 +9,6 @@ public class Main {
         Scanner inputScanner = new Scanner(System.in);
 
         mainMenu(inputScanner, args);
-
     }
 
     public static void mainMenu(Scanner inputScanner, String[] args) {
