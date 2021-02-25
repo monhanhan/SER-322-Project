@@ -688,7 +688,8 @@ public class Artists {
      * @param args         is command line arguments that allows us to make a
      *                     connection
      */
-    private static void removeArtistBand(Scanner inputScanner, String[] args) {
+    protected static void removeArtistBand(Scanner inputScanner,
+            String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -759,7 +760,7 @@ public class Artists {
      * @param args         is the command line arguments that allows a
      *                     connection to be made.
      */
-    private static void addArtistBand(Scanner inputScanner, String[] args) {
+    protected static void addArtistBand(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
