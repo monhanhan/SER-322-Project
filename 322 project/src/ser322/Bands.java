@@ -1,5 +1,8 @@
 package ser322;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -116,14 +119,190 @@ public class Bands {
     }
 
     private static void searchBandName(String[] args) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        System.out.println("Please type the band you are looking for");
+
+        // We need a buffered reader so that we can take input that has
+        // whitespace. When our scanner object gets closed it will close
+        // buffered reader as well since they both use system.in. We cannot
+        // close system.in without closing it for the entire program, so we
+        // shouldn't close it here.
+        BufferedReader stdin = new BufferedReader(
+                new InputStreamReader(System.in));
+
+        String bandName = "";
+
+        try {
+            bandName = stdin.readLine();
+        } catch (IOException e) {
+            System.out.println(
+                    "Something went wrong with taking your band name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
+        }
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement(
+                    "SELECT *" + "FROM BAND WHERE band_name=?");
+
+            stmt.setString(1, bandName);
+
+            // Step 4: Make a query
+            rs = stmt.executeQuery();
+
+            // Step 5: Display the results
+            while (rs.next()) {
+                System.out.printf("%-15s", rs.getInt("band_id"));
+                System.out.printf("%-35s \n", rs.getString("band_name"));
+                System.out.println();
+
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Throwable t1) {
+                System.out.println("A problem closing db resources!");
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Throwable t2) {
+                System.out.println("Oh-oh! Connection leaked!");
+            }
+        }
 
     }
 
     private static void searchBandId(Scanner inputScanner, String[] args) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        System.out.println("Please type the ID of your band");
+
+        String bandId = inputScanner.next();
+        System.out.println();
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn
+                    .prepareStatement("SELECT *" + "FROM BAND WHERE band_id=?");
+
+            stmt.setString(1, bandId);
+
+            // Step 4: Make a query
+            rs = stmt.executeQuery();
+
+            // Step 5: Display the results
+            while (rs.next()) {
+                System.out.printf("%-15s", rs.getInt("band_id"));
+                System.out.printf("%-35s \n", rs.getString("band_name"));
+                System.out.println();
+
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Throwable t1) {
+                System.out.println("A problem closing db resources!");
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Throwable t2) {
+                System.out.println("Oh-oh! Connection leaked!");
+            }
+        }
 
     }
 
     private static void viewArtists(Scanner inputScanner, String[] args) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        System.out.println("Please type the ID of your band");
+
+        String bandId = inputScanner.next();
+        System.out.println();
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement(
+                    "SELECT * FROM ARTIST WHERE artist_id IN (SELECT artist_id FROM FORMS WHERE band_id = ?)");
+
+            stmt.setString(1, bandId);
+
+            // Step 4: Make a query
+            rs = stmt.executeQuery();
+
+            // Step 5: Display the results
+            while (rs.next()) {
+                System.out.printf("%-15s", rs.getInt("artist_id"));
+                System.out.printf("%-35s \n", rs.getString("name"));
+                System.out.println();
+
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Throwable t1) {
+                System.out.println("A problem closing db resources!");
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Throwable t2) {
+                System.out.println("Oh-oh! Connection leaked!");
+            }
+        }
 
     }
 
