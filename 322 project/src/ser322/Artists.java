@@ -849,7 +849,7 @@ public class Artists {
         BufferedReader stdin = new BufferedReader(
                 new InputStreamReader(System.in));
 
-        String artistName = "'";
+        String artistName = "";
 
         try {
             artistName = artistName + stdin.readLine();
@@ -857,8 +857,6 @@ public class Artists {
             System.out.println(
                     "Something went wrong with taking your artist name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
         }
-
-        artistName = artistName + "'";
 
         String _url = args[0];
         try {
