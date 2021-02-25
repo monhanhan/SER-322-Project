@@ -474,7 +474,7 @@ public class Bands {
 
             try {
                 stmt.executeUpdate();
-                System.out.println("Your artist has been added");
+                System.out.println("Your band has been added");
                 System.out.println();
 
             } catch (Exception SQLIntegrityConstraintViolationException) {
