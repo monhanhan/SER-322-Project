@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.Scanner;
 
 public class Genres {
-    public static void generaMenu(Scanner inputScanner, String[] args) {
+    public static void genreMenu(Scanner inputScanner, String[] args) {
         System.out.println("Welcome to the Genera menu");
         printGenreMenuOptions();
 
@@ -145,7 +145,7 @@ public class Genres {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "SELECT * FROM SONG WHERE song_id IN (SELECT song_id FROM IS_GENRE WHERE GENERA_NAME = ?)");
+                    "SELECT * FROM SONG WHERE song_id IN (SELECT song_id FROM IS_GENRE WHERE GENRE_NAME = ?)");
 
             stmt.setString(1, name);
 
@@ -437,10 +437,9 @@ public class Genres {
             conn = DriverManager.getConnection(_url, args[1], args[2]);
 
             // Step 3: Create a statement
-            stmt = conn
-                    .prepareStatement("INSERT into GENRE(name) \n VALUES(?)");
+            stmt = conn.prepareStatement("INSERT into GENRE(name) VALUES(?)");
 
-            stmt.setString(2, name);
+            stmt.setString(1, name);
 
             try {
                 stmt.executeUpdate();
@@ -519,7 +518,7 @@ public class Genres {
             stmt = conn
                     .prepareStatement("DELETE GENRE FROM GENRE Where name = ?");
 
-            stmt.setString(2, name);
+            stmt.setString(1, name);
 
             try {
                 stmt.executeUpdate();
