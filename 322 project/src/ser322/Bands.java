@@ -527,7 +527,7 @@ public class Bands {
         BufferedReader stdin = new BufferedReader(
                 new InputStreamReader(System.in));
 
-        String bandName = "'";
+        String bandName = "";
 
         try {
             bandName = bandName + stdin.readLine();
@@ -535,7 +535,6 @@ public class Bands {
             System.out.println(
                     "Something went wrong with taking your artist name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
         }
-        bandName = bandName + "'";
 
         String _url = args[0];
         try {
@@ -547,8 +546,7 @@ public class Bands {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "UPDATE BAND\\n\" + \"SET name = ? \\n\"\n"
-                            + "                    + \"WHERE band_id = ?");
+                    "UPDATE BAND SET band_name = ? WHERE band_id = ?");
 
             stmt.setString(1, bandName);
             stmt.setInt(2, bandId);
