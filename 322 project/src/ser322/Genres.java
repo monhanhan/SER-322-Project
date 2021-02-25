@@ -9,7 +9,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
+/**
+ *
+ * @author Ryan Munin
+ *
+ *         This class gives us the functionality to do all required database
+ *         operations relating to genre. The only operations that are not seen
+ *         in this is the ability to change the name of a genre. This is because
+ *         the name is the primary key and to change it would defeat the
+ *         purpose. The ability to add or remove genres is still retained.
+ *
+ */
 public class Genres {
+    /**
+     * This is the menu for this part of the program. The program will return
+     * here after every operation until the user inputs the int 0, at which
+     * point the program will exit the while loop and return to the main menu.
+     *
+     * @param inputScanner is our scanner to take input from the user
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     public static void genreMenu(Scanner inputScanner, String[] args) {
         System.out.println("Welcome to the Genera menu");
         printGenreMenuOptions();
@@ -48,6 +68,10 @@ public class Genres {
 
     }
 
+    /**
+     * This is a helper function that allows us to print our menu options
+     * cleanly.
+     */
     private static void printGenreMenuOptions() {
         System.out.println("Please make a selection");
         System.out.println("0: Return to main menu");
@@ -60,6 +84,11 @@ public class Genres {
 
     }
 
+    /**
+     * This allows us to list all genres in our database
+     *
+     * @param args are command line arguments to make a database connection.
+     */
     private static void listGenre(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -109,6 +138,12 @@ public class Genres {
 
     }
 
+    /**
+     * This allows us to see all songs related to a given genre
+     *
+     * @param args is a list of command line arguments split on spaces. It
+     *             allows us to make our database connection.
+     */
     private static void viewSongs(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -184,6 +219,13 @@ public class Genres {
 
     }
 
+    /**
+     * This allows us to add a relation between a song and a genre
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     protected static void addSong(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -265,6 +307,13 @@ public class Genres {
 
     }
 
+    /**
+     * This allows us to remove the relation between a song and a genre
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     private static void removeSong(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -346,6 +395,14 @@ public class Genres {
 
     }
 
+    /**
+     * This allows us to remove the relation between a genera and all songs
+     * associated with it. This allows us to delete genres
+     *
+     * @param generaName is the name of the genre
+     * @param args       is a list of command line arguments split on spaces. It
+     *                   allows us to make our database connection.
+     */
     private static void removeAllSongs(String generaName, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -401,6 +458,12 @@ public class Genres {
 
     }
 
+    /**
+     * This allows us to add a genre to the database
+     *
+     * @param args is a list of command line arguments split on spaces. It
+     *             allows us to make our database connection.
+     */
     private static void addGenre(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -477,6 +540,13 @@ public class Genres {
 
     }
 
+    /**
+     * This allows us to delete a genre. When a genre is deleted all of the
+     * associations between that genre and any songs are deleted as well.
+     *
+     * @param args is a list of command line arguments split on spaces. It
+     *             allows us to make our database connection.
+     */
     private static void deleteGenre(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
