@@ -831,7 +831,7 @@ public class Songs {
     }
 
     /**
-     * This method allows us to change the name of our artist
+     * This method allows us to change the name of our song
      *  (option 12)
      * @param inputScanner takes user input
      * @param args         is a command line argument that allows us to connect
@@ -843,7 +843,7 @@ public class Songs {
         Connection conn = null;
 
         System.out.println("Please type the song Id number");
-        int artistId = Integer.parseInt(inputScanner.next());
+        int songId = Integer.parseInt(inputScanner.next());
         System.out.println();
 
         System.out.println("please type you song's new name");
@@ -858,10 +858,10 @@ public class Songs {
         String songName = "";
 
         try {
-            songName = stdin.readLine();
+            songName = songName + stdin.readLine();
         } catch (IOException e) {
             System.out.println(
-                    "Something went wrong with taking your artist name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
+                    "Something went wrong with taking your song name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
         }
 
         String _url = args[0];
@@ -874,8 +874,7 @@ public class Songs {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "UPDATE SONGS\n\" + \"SET name = ? \\n\"\n"
-                            + "                    + \"WHERE song_id = ?");
+                    "UPDATE SONGS SET name = ? WHERE song_id = ?");
 
             stmt.setString(1, songName);
             stmt.setInt(2, songId);
@@ -887,7 +886,7 @@ public class Songs {
 
             } catch (Exception e) {
                 System.out.println(
-                        "Sorry, something went wrong renaming your song. I hear the name 'Hard Luck' is available");
+                        "Sorry, something went wrong renaming your song. I hear the name 'Bad Luck' is available");
                 System.out.println();
 
             }
@@ -915,7 +914,6 @@ public class Songs {
         }
 
     }
-
   
     /**
      * This is a helper function that will allow us to remove a song
