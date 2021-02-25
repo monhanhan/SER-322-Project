@@ -28,6 +28,10 @@ public class Main {
 
             } else if (inInt == 2) {
                 Albums.albumsMenu(inputScanner, args);
+
+            } else if (inInt == 3) {
+                Bands.bandsMenu(inputScanner, args);
+
             } else {
                 System.out.println(
                         "I'm sorry, you have not selected a valid option.");
@@ -55,6 +59,7 @@ public class Main {
         System.out.println("0: Exit System");
         System.out.println("1: Artists");
         System.out.println("2: Albums");
+        System.out.println("3: Bands");
         System.out.println();
 
     }
