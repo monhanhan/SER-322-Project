@@ -1,0 +1,89 @@
+album_id,title,release_year
+1,Whitney,1985
+2,I'm Your Baby Tonight,1990
+3,Nu Nation Project,1998
+4,God's Property,1997
+5,Hero,2005
+6,Black & Blue,1973
+7,To Be True,1975
+8,Restored,2004
+9,The Unforgetable Fire,1984
+10,The Joshua Tree,1987
+11,Songs of Innocence,2014
+12,Anomaly,2014
+13,Restoration,2020
+14,Toys In The Attic,1975
+15,Permanent Vacation,1987
+16,Get Your Wings,1974
+17,25,2015
+18,19,2008
+19,Film Music 2012,2013
+20,Let's Stay Together,1972
+21,Al Green Gets Next to You,1972
+22,Ladies of the Canyon,1970
+23,Hejira,1976
+24,Keep It Live,1982
+25,Dazz Band Live,2005
+26,ACT ONE,2016
+27,was it not,2020
+28,Barry Manilow II,1974
+29,Barry Manilow,1973
+30,Hot Stuff,1979
+31,Bad Girls,1979
+32,My House,2015
+33,Zillionaire,2012
+34,Excellent,2012
+35,Church Clothes 2,2013
+36,Jarreau,1983
+37,High Crime,1984
+38,Feels So Good,1977
+39,Children of Sanchez,1978
+40,Street Life,1979
+41,Southern Comfort,1974
+42,Living Inside Your Love,1976
+43,Finger Paintings,1977
+44,Winelight,1980
+45,Mister Magic,1975
+46,Rainbow Seeker,1978
+47,"Old Places, Old Faces",1996
+48,Out of Our Heads,1965
+49,Some Girls 2009 Remastered,2009
+50,"thank u, next",2019
+51,My Everything,2014
+52,Suddenly,1984
+53,Love Zone,1986
+54,No Secrets,1972
+55,Hotcakes,1974
+56,Close to You,1970
+57,A Song For You,1972
+58,"Promises, Promises",1968
+59,New and Improved,1974
+60,Diana Ross,1970
+61,Love Child,1968
+62,Portrait,1969
+63,The Age of Aquarius,1969
+64,Magic Man,1975
+65,Best Day of My Life,2018
+66,Maybe Tomorow,1971
+67,ABC,1970
+68,Third Album,1970
+69,I've Been Thinking About You,1990
+70,Back in the Hi-Life,2003
+71,Thriller,1982
+72,Off the Wall,1979
+73,Frampton,1975
+74,I'm in You,1977
+75,Stand,1969
+76,There's a Riot Goin' On,1971
+77,Girl on Fire,2012
+78,Songs in A Minor,2001
+79,What's Going On,1971
+80,Let's Get It On,1973
+81,Rags to Rufus,1974
+82,Ask Rufus,1977
+83,Innervisions,1973
+84,Hotter than July,1980
+85,Secret,1996
+86,Spell My Name,2020
+87,Aja,1977
+88,Katy Lied,1975

@@ -1,0 +1,94 @@
+song_id,release_year,name
+1,1985,You Give Good Love
+2,1985,Saving All My Love For You
+3,1990,I'm Your Baby Tonight
+4,1998,Revolution
+5,1997,Stomp
+6,2005,Looking For You
+7,2005,Imagine Me
+8,1973,The Love I Lost Pt 1
+9,1973,The Love I Lost Pt 2
+10,1975,Bad Luck Pt 1
+11,1975,Bad Luck Pt 2
+12,2004,I'll Take You Back
+13,1984,Pride
+14,1987,I Still Haven't Found
+15,2014,Every Breaking Wave
+16,2014,All I Need Is You
+17,2020,Drown
+18,2020,Deep End
+19,1975,Walk This Way
+20,1987,Dude
+21,1974,Same Old Song And Dance
+22,2015,Hello
+23,2008,Daydreamer
+24,2013,Skyfall
+25,1972,Let's Stay Together
+26,1972,Tired of Being Alone
+27,1970,Big Yellow Taxi
+28,1976,Song for Sharon
+29,1982,Let It Whip
+30,2005,Disco Dazz
+31,2016,Down
+32,2020,no one knows
+33,1974,Mandy
+34,1973,Could It Be Magic
+35,1979,Hot Stuff
+36,1979,Bad Girls
+37,2015,My House
+38,2012,Zillionaire
+39,2012,Precious Puritans
+40,2013,Hands Up
+41,1983,Mornin'
+42,1984,After All
+43,1977,Feels So Good
+44,1978,Consuelo's Love Theme
+45,1979,Street Life
+46,1974,Stomp and Buck Dance
+47,1976,Living Inside Your Love
+48,1977,Dr. Macumba
+49,1980,Just the Two Of Us
+50,1975,Mister Magic
+51,1978,In All My Wildest Dreams
+52,1996,Hippies on a Corner
+53,1965,Satisfaction
+54,2009,Miss You
+55,2019,Seven Rings
+56,2014,Bang Bang
+57,1984,Carribean Queen
+58,1986,There'll Be Sad Songs
+59,1972,You're So Vain
+60,1974,Haven't Got Time for the Pain
+61,1970,We've Only Jus Begun
+62,1972,Hurting  Each Other
+63,1968,This Girl's In Love With You
+64,1974,Then Came You
+65,1970,Ain't No Mountain High Enough
+66,1968,Love Child
+67,1969,One Less Bell to Answer
+68,1969,Wedding Bell Blues
+69,1975,Crazy On You
+70,2018,These Dreams
+71,1971,Never Can Say Goodbye
+72,1970,ABC
+73,1970,I'll Be There
+74,1990,I've Been Thinking About You
+75,2003,Where Are U
+76,1982,Billie Jean
+77,1979,Rock With You
+78,1975,Show Me the Way
+79,1977,"Signed, Sealed Delivered"
+80,1969,I Want to Take You Higher
+81,1971,Family Affair
+82,2012,Girl on Fire
+83,2001,Piano & I
+84,1971,Inner City Blues
+85,1973,Distant Lover
+86,1974,Tell Me Something Good
+87,1977,Close The Door
+88,1973,Living for the City
+89,1980,All I Do
+90,1996,Unbreak My Heart
+91,2020,Gotta Move On
+92,1977,Peg
+93,1975,Bad Sneakers

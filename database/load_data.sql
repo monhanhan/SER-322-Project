@@ -1,0 +1,31 @@
+# IMPORTANT NOTE:
+# When running this script, you may get an error similar to this one:
+#   Can't get stat of '/usr/local/var/mysql/music/albums.txt' (OS errno 2 - No such file or directory)
+# This means you need to copy the *.txt files to the directory specified in the error.
+#
+# In this example, that might look like this:
+# $> cp ./*.txt /usr/local/var/mysql/music/
+
+USE music;
+
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE FORMS;
+TRUNCATE TABLE HAS;
+TRUNCATE TABLE IS_GENRE;
+TRUNCATE TABLE PERFORMS;
+TRUNCATE TABLE ALBUM;
+TRUNCATE TABLE ARTIST;
+TRUNCATE TABLE BAND;
+TRUNCATE TABLE GENRE;
+TRUNCATE TABLE SONG;
+SET FOREIGN_KEY_CHECKS = 1;
+
+LOAD DATA INFILE 'albums.txt' INTO TABLE ALBUM FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (album_id,title,release_year);
+LOAD DATA INFILE 'artists.txt' INTO TABLE ARTIST FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (artist_id,name);
+LOAD DATA INFILE 'bands.txt' INTO TABLE BAND FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (band_id,band_name);
+LOAD DATA INFILE 'genres.txt' INTO TABLE GENRE FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (name);
+LOAD DATA INFILE 'songs.txt' INTO TABLE SONG FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (song_id,release_year,name);
+LOAD DATA INFILE 'forms.txt' INTO TABLE FORMS FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (band_id,artist_id);
+LOAD DATA INFILE 'has.txt' INTO TABLE HAS FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (song_id,album_id);
+LOAD DATA INFILE 'is_genres.txt' INTO TABLE IS_GENRE FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (genre_name,song_id);
+LOAD DATA INFILE 'performs.txt' INTO TABLE PERFORMS FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES (artist_id,song_id);

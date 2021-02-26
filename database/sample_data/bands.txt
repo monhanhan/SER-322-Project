@@ -1,0 +1,19 @@
+band_id,band_name
+1,Heart
+2,Rolling Stones
+3,Sly & Family Stone
+4,London Beat
+5,Jackson Five
+6,Steely Dan
+7,The Fifth Dimension
+8,The Crusaders
+9,The Supremes
+10,The Carpenters
+11,Rufus
+12,The Blue Notes
+13,U2
+14,Aerosmirh
+15,The Dazz Band
+16,Flo Rida Band
+17,Nu Nation
+18,Kirk Franklin and the Family

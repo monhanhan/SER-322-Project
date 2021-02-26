@@ -1,0 +1,51 @@
+artist_id,name
+1,Whitney Houston
+2,Kirk Franklin
+3,Harold Melvin
+4,Jeremey Camp
+5,Bono
+6,Lecrae
+7,Steven Tyler
+8,Adele
+9,Al Green
+10,Joni Mitchell
+11,Bobby Harris
+12,Marian Hill
+13,Barry Manilow
+14,Donna Summers
+15,Flo Rida
+16,Propaganda
+17,Al Jarreau
+18,Chuck Mangione
+19,Joe Perry
+20,Earl Klugh
+21,Grover Washington Jr
+22,Joe Sample
+23,Mick Jagger
+24,Arianda Grande
+25,Billy Ocean
+26,Carly Simon
+27,Karen Carpenter
+28,Dionne Warwick
+29,Diana Ross
+30,Wilton Felder
+31,Walter Becker
+32,Marilyn McCoo
+33,Ann Wilson
+34,Jermaine Jackson
+35,Myles Kane
+36,Jimmy Helms
+37,Michael Jackson
+38,Peter Frampton
+39,Slyvester Stone
+40,Dan Fagan
+41,Toni Braxton
+42,Jimmy Chambers
+43,Alicia Keys
+44,Tito Jackson
+45,Nancy Wilson
+46,Marvin Gaye
+47,Keith Richards
+48,Chaka Kahn
+49,Stevie Wonder
+50,Mary Wilson
