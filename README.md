@@ -2,7 +2,7 @@
 
 ## Database Setup
 1. Run the `create_tables.sql` script found in the `database` folder at the top level of the project
-2. Copy all the sample data files from `/database/sample_data/` and paste them in your computer's mysql directory
+2. Copy all the sample data files from `/database/sample_data/` and paste them in the 'music' subdirectory of your computer's mysql directory
 3. Run the `load_data.sql` script
 
 **DEBUGGING INSTRUCTIONS**
