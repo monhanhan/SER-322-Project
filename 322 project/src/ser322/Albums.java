@@ -3,15 +3,29 @@ package ser322;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.Scanner;
 
+/**
+ *
+ * @author Sam Rondinelli
+ *
+ *         This class gives us the functionality to do all required database
+ *         operations relating to albums.
+ *
+ */
 public class Albums {
     private static Scanner scanner;
 
+    /**
+     * This is the menu for this part of the program. The program will return
+     * here after every operation until the user inputs the int 0, at which
+     * point the program will exit the while loop and return to the main menu.
+     *
+     * @param inputScanner is our scanner to take input from the user
+     * @param args         is a list of command line arguments split on spaces.
+     *                     These allows us to make our database connection.
+     */
     public static void albumsMenu(Scanner inputScanner, String[] args) {
         scanner = inputScanner;
 
@@ -32,23 +46,25 @@ public class Albums {
                     listAlbumsByReleaseYear(args);
                     break;
                 case 4:
-
+                    listSongsOnAlbum(args);
                     break;
                 case 5:
-
+                    addSongToAlbum(args);
                     break;
                 case 6:
-
+                    changeAlbumName(args);
                     break;
                 case 7:
-
+                    changeReleaseYear(args);
                     break;
                 case 8:
-
+                    addAlbum(args);
+                    break;
+                case 9:
+                    removeAlbum(args);
                     break;
                 default:
-                    System.out.println(
-                            "Sorry, you did not select a valid menu option.");
+                    System.out.println("Sorry, you did not select a valid menu option.");
                     System.out.println();
                     break;
             }
@@ -64,18 +80,12 @@ public class Albums {
         System.out.println("1: List all albums");
         System.out.println("2: Search albums by name");
         System.out.println("3: Search albums by release year");
-
-
-        // Unfinished
-        System.out.println("4: See which bands an artist is in");
-        System.out.println("5: See which songs an artist has preformed");
-        System.out.println("6: Add an artist");
-        System.out.println("7: Remove an artist");
-        System.out.println("8: Remove an artist from a song");
-        System.out.println("9: Add an artist to a song");
-        System.out.println("10: Remove an artist from a band");
-        System.out.println("11: Add an artist to a band");
-        System.out.println("12: Change the name of an artist");
+        System.out.println("4: List all songs on an album");
+        System.out.println("5: Add a song to an album");
+        System.out.println("6: Change the name of an album");
+        System.out.println("7: Change the release year of an album");
+        System.out.println("8: Create an album");
+        System.out.println("9: Delete an album");
         System.out.println();
     }
 
@@ -83,7 +93,7 @@ public class Albums {
         System.out.printf("%-6s", "ID");
         System.out.printf("%-35s", "Album Title");
         System.out.printf("%-12s \n", "Release Year");
-        System.out.printf("_________________________________________________________\n");
+        System.out.print("_________________________________________________________\n");
     }
 
     private static String promptString(String prompt) {
@@ -111,9 +121,7 @@ public class Albums {
 
     private static int promptInt(String prompt) {
         System.out.println(prompt);
-        int value = scanner.nextInt();
-
-        return value;
+        return scanner.nextInt();
     }
 
     private static void closeDBResources(ResultSet rs, PreparedStatement stmt, Connection conn) {
@@ -226,7 +234,7 @@ public class Albums {
             // Step 3: Create a statement
             stmt = conn.prepareStatement("SELECT *" + "FROM ALBUM WHERE release_year=?");
 
-            // Step 4: Prompt for album name
+            // Step 4: Prompt for release year
             int releaseYear = promptInt("Please type the release year: ");
             stmt.setInt(1, releaseYear);
 
@@ -247,5 +255,255 @@ public class Albums {
         } finally { // ALWAYS clean up your DB resources
             closeDBResources(rs, stmt, conn);
         }
+    }
+
+    private static void listSongsOnAlbum(String[] args) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement(
+                    "SELECT SONG.song_id,name" + " FROM ALBUM " +
+                    "LEFT JOIN HAS ON HAS.album_id=ALBUM.album_id " +
+                    "LEFT JOIN SONG ON SONG.song_id=HAS.song_id " +
+                    "WHERE ALBUM.album_id=?");
+
+            // Step 4: Prompt for album ID
+            int albumId = promptInt("Please type the album ID: ");
+            stmt.setInt(1, albumId);
+
+            // Step 4: Make a query
+            rs = stmt.executeQuery();
+
+            System.out.println();
+            System.out.printf("%-10s", "Song ID");
+            System.out.printf("%-35s \n", "Song Name");
+            System.out.print("______________________________________\n");
+
+            // Step 5: Display the results
+            while (rs.next()) {
+                System.out.printf("%-10s", rs.getInt("song_id"));
+                System.out.printf("%-35s", rs.getString("name"));
+                System.out.println();
+            }
+
+            System.out.println();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            closeDBResources(rs, stmt, conn);
+        }
+    }
+
+    private static void addSongToAlbum(String[] args) {
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        int albumId = promptInt("Please type the album ID: ");
+        int songId = promptInt("Please type the song ID: ");
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement(
+                    "INSERT into HAS(album_id, song_id) \n VALUES(?,?)");
+
+            stmt.setInt(1, albumId);
+            stmt.setInt(2, songId);
+
+            try {
+                stmt.executeUpdate();
+                System.out.println("The song is now added to the album");
+                System.out.println();
+
+            } catch (Exception SQLIntegrityConstraintViolationException) {
+                System.out.println(
+                        "Sorry, that song already exists on this album.");
+                System.out.println();
+
+            }
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            closeDBResources(null, stmt, conn);
+        }
+    }
+
+    private static void changeAlbumName(String[] args) {
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        int albumId = promptInt("Please type the album ID: ");
+        String albumName = promptString("Please type the album's new name: ");
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement(
+                    "UPDATE ALBUM SET title = ? WHERE album_id = ?");
+
+            stmt.setString(1, albumName);
+            stmt.setInt(2, albumId);
+
+            try {
+                stmt.executeUpdate();
+                System.out.println("You have renamed your album");
+                System.out.println();
+
+            } catch (Exception e) {
+                System.out.println(
+                        "Sorry, something went wrong renaming your album.");
+                System.out.println();
+
+            }
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            closeDBResources(null, stmt, conn);
+        }
+    }
+
+    private static void changeReleaseYear(String[] args) {
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        int albumId = promptInt("Please type the album ID: ");
+        int releaseYear = promptInt("Please type the album's new release year: ");
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement(
+                    "UPDATE ALBUM SET release_year = ? WHERE album_id = ?");
+
+            stmt.setInt(1, releaseYear);
+            stmt.setInt(2, albumId);
+
+            try {
+                stmt.executeUpdate();
+                System.out.println("You have changed the album's release year");
+                System.out.println();
+
+            } catch (Exception e) {
+                System.out.println(
+                        "Sorry, something went wrong changing the release year.");
+                System.out.println();
+
+            }
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            closeDBResources(null, stmt, conn);
+        }
+    }
+
+    private static void addAlbum(String[] args) {
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        String albumName = promptString("Please type album name: ");
+        int albumId = promptInt("Please type the album ID: ");
+        int releaseYear = promptInt("Please type the release year: ");
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement(
+                    "INSERT into ALBUM(album_id, title, release_year) \n VALUES(?,?,?)");
+
+            stmt.setInt(1, albumId);
+            stmt.setString(2, albumName);
+            stmt.setInt(3, releaseYear);
+
+            try {
+                stmt.executeUpdate();
+                System.out.println("Your album has been created");
+                System.out.println();
+
+            } catch (SQLIntegrityConstraintViolationException e) {
+                System.out.println(
+                        "Sorry, an album already exists with that ID number.");
+                System.out.println();
+            }
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            closeDBResources(null, stmt, conn);
+        }
+    }
+
+    private static void removeAlbum(String[] args) {
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        System.out.println("Please note: When you delete an album all of its relations get deleted as well");
+        int albumId = promptInt("Please enter the ID number of the album you wish to delete: ");
+
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement("DELETE ALBUM FROM ALBUM WHERE album_id = ?");
+
+            stmt.setInt(1, albumId);
+
+            try {
+                stmt.executeUpdate();
+                System.out.println("Album deleted");
+                System.out.println();
+
+            } catch (Exception SQLIntegrityConstraintViolationException) {
+                System.out.println("Something went wrong removing that album");
+                System.out.println();
+            }
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            closeDBResources(null, stmt, conn);
+        }
+
     }
 }
