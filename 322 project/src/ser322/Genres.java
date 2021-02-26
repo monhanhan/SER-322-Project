@@ -81,7 +81,6 @@ public class Genres {
         System.out.println("4: Remove a song from a genre");
         System.out.println("5: Add a genre");
         System.out.println("6: Delete a genre");
-
     }
 
     /**

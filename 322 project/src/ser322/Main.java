@@ -9,7 +9,6 @@ public class Main {
         Scanner inputScanner = new Scanner(System.in);
 
         mainMenu(inputScanner, args);
-
     }
 
     public static void mainMenu(Scanner inputScanner, String[] args) {
@@ -18,11 +17,8 @@ public class Main {
         printMainMenu();
 
         int inInt = Integer.parseInt(inputScanner.next());
-        // TODO: Add code for the next menu level.
 
         while (inInt != 0) {
-            // TODO: update this as more menus are added.
-
             if (inInt == 1) {
                 Artists.artistMenu(inputScanner, args);
 
@@ -54,8 +50,6 @@ public class Main {
     }
 
     private static void printMainMenu() {
-        // TODO: as new options are added to the main menu we can add them here
-        // so that we don't have to edit so many places.
         System.out.println("Main Menu");
         System.out.println("Please make a selection");
         System.out.println();
@@ -65,7 +59,6 @@ public class Main {
         System.out.println("3: Bands");
         System.out.println("4: Genres");
         System.out.println();
-
     }
 
 }

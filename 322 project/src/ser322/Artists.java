@@ -74,7 +74,7 @@ public class Artists {
         System.out.println("2: Seach artists by name");
         System.out.println("3: Search artist by artist ID");
         System.out.println("4: See which bands an artist is in");
-        System.out.println("5: See which songs an artist has preformed");
+        System.out.println("5: See which songs an artist has performed");
         System.out.println("6: Add an artist");
         System.out.println("7: Remove an artist");
         System.out.println("8: Remove an artist from a song");
