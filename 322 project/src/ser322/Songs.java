@@ -138,7 +138,7 @@ public class Songs {
             conn = DriverManager.getConnection(_url, args[1], args[2]);
 
             // Step 3: Create a statement
-            stmt = conn.prepareStatement("SELECT *" + "FROM SONG");
+            stmt = conn.prepareStatement("SELECT * FROM SONG");
 
             // Step 4: Make a query
             rs = stmt.executeQuery();
@@ -149,8 +149,8 @@ public class Songs {
                 System.out.printf("%-25s", rs.getInt("release_year"));
                 System.out.printf("%-35s \n", rs.getString("name"));
                 System.out.println();
-
             }
+            System.out.println();
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
@@ -159,31 +159,13 @@ public class Songs {
 
     }
 
-
     //method to handle option 2
     private static void searchSongName(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
 
-        System.out.println("Please type the name of song you are looking for");
-
-        // We need a buffered reader so that we can take input that has
-        // whitespace. When our scanner object gets closed it will close
-        // buffered reader as well since they both use system.in. We cannot
-        // close system.in without closing it for the entire program, so we
-        // shouldn't close it here.
-        BufferedReader stdin = new BufferedReader(
-                new InputStreamReader(System.in));
-
-        String songName = "";
-
-        try {
-            songName = stdin.readLine();
-        } catch (IOException e) {
-            System.out.println(
-                    "Something went wrong with taking your artist name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
-        }
+        String songName = promptString("Please type the name of song you are looking for: ");
 
         String _url = args[0];
         try {
@@ -194,8 +176,7 @@ public class Songs {
             conn = DriverManager.getConnection(_url, args[1], args[2]);
 
             // Step 3: Create a statement
-            stmt = conn
-                    .prepareStatement("SELECT *" + "FROM SONG WHERE name=?");
+            stmt = conn.prepareStatement("SELECT *" + "FROM SONG WHERE name=?");
 
             stmt.setString(1, songName);
 
@@ -204,18 +185,17 @@ public class Songs {
 
             // Step 5: Display the results
             while (rs.next()) {
-                System.out.printf("%-15s", rs.getInt("song_id"));
-                System.out.printf("%-25s", rs.getInt("release_year"));
+                System.out.printf("%-6s", rs.getInt("song_id"));
+                System.out.printf("%-10s", rs.getInt("release_year"));
                 System.out.printf("%-35s \n", rs.getString("name"));
                 System.out.println();
-
             }
+            System.out.println();
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
             closeDBResources(rs, stmt, conn);
         }
-
     }
 
     //method to handle option 3
@@ -224,10 +204,46 @@ public class Songs {
         PreparedStatement stmt = null;
         Connection conn = null;
 
-        System.out.println("Please type the ID of your song");
+        int song_id = promptInt("Please type the ID of your song: ");
 
-        int song_id = Integer.parseInt(scanner.next());
-        System.out.println();
+        String _url = args[0];
+        try {
+            // Step 1: Load the JDBC driver
+            Class.forName(args[3]);
+
+            // Step 2: make a connection
+            conn = DriverManager.getConnection(_url, args[1], args[2]);
+
+            // Step 3: Create a statement
+            stmt = conn.prepareStatement("SELECT *" + "FROM SONG WHERE song_id=?");
+
+            stmt.setInt(1, song_id);
+
+            // Step 4: Make a query
+            rs = stmt.executeQuery();
+
+            // Step 5: Display the results
+            while (rs.next()) {
+                System.out.printf("%-6s", rs.getInt("song_id"));
+                System.out.printf("%-10s", rs.getInt("release_year"));
+                System.out.printf("%-35s \n", rs.getString("name"));
+                System.out.println();
+            }
+            System.out.println();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally { // ALWAYS clean up your DB resources
+            closeDBResources(rs, stmt, conn);
+        }
+    }
+
+    //method to handle option 4
+    private static void listArtists(String[] args) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+
+        int songId = promptInt("Please type the ID of your song: ");
 
         String _url = args[0];
         try {
@@ -239,66 +255,23 @@ public class Songs {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "SELECT *" + "FROM SONGS WHERE song_id=?");
+                    "SELECT ARTIST.artist_id,ARTIST.name FROM SONG " +
+                    "LEFT JOIN PERFORMS ON PERFORMS.song_id=SONG.song_id " +
+                    "LEFT JOIN ARTIST ON ARTIST.artist_id=PERFORMS.artist_id " +
+                    "WHERE SONG.song_id=?");
 
-            stmt.setInt(1, song_id);
-
-            // Step 4: Make a query
-            rs = stmt.executeQuery();
-
-            // Step 5: Display the results
-            while (rs.next()) {
-                System.out.printf("%-15s", rs.getInt("song_id"));
-                System.out.printf("%-15s", rs.getInt("release_year"));
-                System.out.printf("%-35s \n", rs.getString("name"));
-                System.out.println();
-            }
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        } finally { // ALWAYS clean up your DB resources
-            closeDBResources(rs, stmt, conn);
-        }
-
-    }
-
-    //method to handle option 4
-    private static void listArtists(String[] args) {
-        ResultSet rs = null;
-        PreparedStatement stmt = null;
-        Connection conn = null;
-
-        System.out.println("Please type the ID of your song");
-
-        String artistId = scanner.next();
-        System.out.println();
-
-        String _url = args[0];
-        try {
-            // Step 1: Load the JDBC driver
-            Class.forName(args[3]);
-
-            // Step 2: make a connection
-            conn = DriverManager.getConnection(_url, args[1], args[2]);
-
-            // Step 3: Create a statement
-            stmt = conn.prepareStatement("Select *\n" + "FROM SONG\n"
-                    + "WHERE song_id IN \n" + "    (\n" + "    SELECT song_id\n"
-                    + "    FROM PERFORMS\n" + "    WHERE artist_id = ?\n"
-                    + ")\n");
-
-            stmt.setString(1, artistId);
+            stmt.setInt(1, songId);
 
             // Step 4: Make a query
             rs = stmt.executeQuery();
 
             // Step 5: Display the results
             while (rs.next()) {
-                System.out.printf("%-15s", rs.getInt("song_id"));
-                System.out.printf("%-15s", rs.getInt("release_year"));
-                System.out.printf("%-35s \n", rs.getString("name"));
+                System.out.printf("%-15s", rs.getInt("artist_id"));
+                System.out.printf("%-35s", rs.getString("name"));
                 System.out.println();
-
             }
+            System.out.println();
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
@@ -313,29 +286,9 @@ public class Songs {
         PreparedStatement stmt = null;
         Connection conn = null;
 
-        System.out.println("Please type the name of the song");
-
-        // We need a buffered reader so that we can take input that has
-        // whitespace. When our scanner object gets closed it will close
-        // buffered reader as well since they both use system.in. We cannot
-        // close system.in without closing it for the entire program, so we
-        // shouldn't close it here.
-        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-
-        String songName = "";
-        int songId;
-        int releaseYear;
-
-
-        songName = stdin.readLine();
-
-        System.out.println("Please type the year the song was released");
-        releaseYear = Integer.parseInt(scanner.next());
-
-
-        System.out.println("Please type the song Id number");
-        songId = Integer.parseInt(stdin.readLine());
-
+        String songName = promptString("Please type the song name: ");
+        int songId = promptInt("Please type the song ID: ");
+        int releaseYear = promptInt("Please type the release year: ");
 
         String _url = args[0];
         try {
@@ -347,7 +300,7 @@ public class Songs {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "INSERT into SONGS(song_id, release_year , name) \n VALUES(?,?,?)");
+                    "INSERT into SONG(song_id, release_year , name) \n VALUES(?,?,?)");
 
             stmt.setInt(1, songId);
             stmt.setInt(2, releaseYear);
@@ -362,7 +315,6 @@ public class Songs {
                 System.out.println(
                         "Sorry, a song already exists with that ID number.");
                 System.out.println();
-
             }
 
         } catch (Exception exc) {
@@ -373,7 +325,7 @@ public class Songs {
     }
 
     /**
-     * This removes an song and all its relations.(option 6)
+     * This removes a song and all its relations.(option 6)
      *
      * @param args         are the command line arguments that allow us to
      *                     connect to our database.
@@ -383,17 +335,11 @@ public class Songs {
         PreparedStatement stmt = null;
         Connection conn = null;
 
-        System.out.println(
-                "Please enter the ID number of the song you wish to delete.");
-        System.out.println(
-                "Please note: When you delete an song all of their relations get deleted as well");
-        System.out.println();
-
-        int songId = Integer.parseInt(scanner.next());
+        System.out.println("Please note: When you delete an song all of their relations get deleted as well");
+        int songId = promptInt("Please enter the ID number of the song you wish to delete: ");
 
         // This is where we remove all relations.
         removeAllSongRelations(songId, args);
-
 
         String _url = args[0];
         try {
@@ -404,7 +350,7 @@ public class Songs {
             conn = DriverManager.getConnection(_url, args[1], args[2]);
 
             // Step 3: Create a statement
-            stmt = conn.prepareStatement("DELETE SONG\n" + "FROM SONGS\n"
+            stmt = conn.prepareStatement("DELETE SONG\n" + "FROM SONG\n"
                     + "Where song_id = ?");
 
             stmt.setInt(1, songId);
@@ -438,13 +384,8 @@ public class Songs {
         PreparedStatement stmt = null;
         Connection conn = null;
 
-        System.out.println("Please type the artist Id number");
-        int artistId = Integer.parseInt(scanner.next());
-        System.out.println();
-
-        System.out.println("please type the song Id number");
-        int songId = Integer.parseInt(scanner.next());
-        System.out.println();
+        int artistId = promptInt("Please type the artist ID number: ");
+        int songId = promptInt("Please type the song Id number: ");
 
         String _url = args[0];
         try {
@@ -493,13 +434,8 @@ public class Songs {
         PreparedStatement stmt = null;
         Connection conn = null;
 
-        System.out.println("Please type the artist Id number");
-        int artistId = Integer.parseInt(scanner.next());
-        System.out.println();
-
-        System.out.println("please type the song Id number");
-        int songId = Integer.parseInt(scanner.next());
-        System.out.println();
+        int artistId = promptInt("Please type the artist Id number: ");
+        int songId = promptInt("Please type the song Id number: ");
 
         String _url = args[0];
         try {
@@ -547,27 +483,8 @@ public class Songs {
         PreparedStatement stmt = null;
         Connection conn = null;
 
-        System.out.println("Please type the song Id number");
-        int songId = Integer.parseInt(scanner.next());
-        System.out.println();
-
-        System.out.println("please type you song's new name");
-        // We need a buffered reader so that we can take input that has
-        // whitespace. When our scanner object gets closed it will close
-        // buffered reader as well since they both use system.in. We cannot
-        // close system.in without closing it for the entire program, so we
-        // shouldn't close it here.
-        BufferedReader stdin = new BufferedReader(
-                new InputStreamReader(System.in));
-
-        String songName = "";
-
-        try {
-            songName = songName + stdin.readLine();
-        } catch (IOException e) {
-            System.out.println(
-                    "Something went wrong with taking your song name. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
-        }
+        int songId = promptInt("Please type the song Id number: ");
+        String songName = promptString("Please type your song's new name: ");
 
         String _url = args[0];
         try {
@@ -579,14 +496,14 @@ public class Songs {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "UPDATE SONGS SET name = ? WHERE song_id = ?");
+                    "UPDATE SONG SET name = ? WHERE song_id = ?");
 
             stmt.setString(1, songName);
             stmt.setInt(2, songId);
 
             try {
                 stmt.executeUpdate();
-                System.out.println("You have renamed your artist");
+                System.out.println("You have renamed your song");
                 System.out.println();
 
             } catch (Exception e) {
@@ -633,8 +550,8 @@ public class Songs {
             stmt2 = conn.prepareStatement("DELETE HAS\n" + "FROM HAS\n"
                     + "Where song_id = ?");
 
-            stmt.setInt(1, song_Id);
-            stmt2.setInt(1, song_Id);
+            stmt.setInt(1, songId);
+            stmt2.setInt(1, songId);
 
             try {
                 stmt.executeUpdate();
