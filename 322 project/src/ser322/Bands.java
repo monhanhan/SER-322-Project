@@ -9,7 +9,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
+/**
+ *
+ * @author Ryan Munin This class allows us to use all database operations
+ *         related to Bands.
+ *
+ */
 public class Bands {
+    /**
+     * This is the menu for the band section of the program. After each
+     * operation we will return here until the user inputs 0, at which point we
+     * will exit the loop and return to the main menu.
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     public static void bandsMenu(Scanner inputScanner, String[] args) {
         System.out.println("Welcome to the Band menu");
         printBandMenuOptions();
@@ -57,6 +72,9 @@ public class Bands {
 
     }
 
+    /**
+     * This allows us to cleanly print our menu options
+     */
     private static void printBandMenuOptions() {
         System.out.println("Please make a selection");
         System.out.println("0: Return to main menu");
@@ -72,6 +90,12 @@ public class Bands {
 
     }
 
+    /**
+     * This allows us to list all the bands in the database.
+     *
+     * @param args is a list of command line arguments split on spaces. It
+     *             allows us to make our database connection.
+     */
     private static void listBands(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -122,6 +146,12 @@ public class Bands {
 
     }
 
+    /**
+     * This allows us to search for a band by name.
+     *
+     * @param args is a list of command line arguments split on spaces. It
+     *             allows us to make our database connection.
+     */
     private static void searchBandName(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -194,6 +224,13 @@ public class Bands {
 
     }
 
+    /**
+     * This allows for us to search for a band by ID number
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     private static void searchBandId(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -252,6 +289,13 @@ public class Bands {
 
     }
 
+    /**
+     * This allows us to view all the artists in a given band
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     private static void viewArtists(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -310,6 +354,14 @@ public class Bands {
 
     }
 
+    /**
+     * This allows us to remove the association between a band and all artists
+     * to which it is associated.
+     *
+     * @param bandId is the id number of the band
+     * @param args   is a list of command line arguments split on spaces. It
+     *               allows us to make our database connection.
+     */
     private static void removeAllArtist(int bandId, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -364,6 +416,14 @@ public class Bands {
 
     }
 
+    /**
+     * This method allows us to delete a band. When a band is deleted all
+     * associations between the band and any artists are also deleted.
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     private static void deleteBand(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -429,6 +489,13 @@ public class Bands {
 
     }
 
+    /**
+     * This allows us to add bands to the database
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     private static void addBand(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -508,6 +575,13 @@ public class Bands {
 
     }
 
+    /**
+     * This allows us to change the name of a band
+     *
+     * @param inputScanner is a scanner for user input
+     * @param args         is a list of command line arguments split on spaces.
+     *                     It allows us to make our database connection.
+     */
     private static void changeBandName(Scanner inputScanner, String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
