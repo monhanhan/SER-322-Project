@@ -74,6 +74,9 @@ public class Albums {
         }
     }
 
+    /**
+     * Prints all the menu options
+     */
     private static void printAlbumsMenuOptions() {
         System.out.println("Please make a selection");
         System.out.println("0: Return to main menu");
@@ -89,6 +92,9 @@ public class Albums {
         System.out.println();
     }
 
+    /**
+     * Prints out the column headers for a list of albums
+     */
     private static void printAlbumHeader() {
         System.out.printf("%-6s", "ID");
         System.out.printf("%-35s", "Album Title");
@@ -96,6 +102,11 @@ public class Albums {
         System.out.print("_________________________________________________________\n");
     }
 
+    /**
+     * Prints out a prompt and then reads a string from the user
+     *
+     * @param prompt The string to prompt the user with
+     */
     private static String promptString(String prompt) {
         System.out.println(prompt);
 
@@ -119,11 +130,23 @@ public class Albums {
         return value;
     }
 
+    /**
+     * Prints out a prompt and then reads an int from the user
+     *
+     * @param prompt The string to prompt the user with
+     */
     private static int promptInt(String prompt) {
         System.out.println(prompt);
         return scanner.nextInt();
     }
 
+    /**
+     * Ensures that all database resources are properly cleaned up
+     *
+     * @param rs ResultSet
+     * @param stmt PreparedStatement
+     * @param conn Connection
+     */
     private static void closeDBResources(ResultSet rs, PreparedStatement stmt, Connection conn) {
         try {
             if (rs != null) {
@@ -144,6 +167,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Lists out all the albums
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void listAlbums(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -179,6 +208,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Searches for an album by name
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void searchAlbumsByName(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -218,6 +253,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Lists all albums released in a specified year
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void listAlbumsByReleaseYear(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -257,6 +298,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Lists all songs on a specified album
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void listSongsOnAlbum(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -304,6 +351,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Adds a song to an album
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void addSongToAlbum(String[] args) {
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -345,6 +398,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Changes an album's name
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void changeAlbumName(String[] args) {
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -386,6 +445,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Changes the release year of an album
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void changeReleaseYear(String[] args) {
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -427,6 +492,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Creates a new album
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void addAlbum(String[] args) {
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -469,6 +540,12 @@ public class Albums {
         }
     }
 
+    /**
+     * Deletes an album
+     *
+     * @param args a list of command line arguments split on spaces,
+     *             used to make the database connection
+     */
     private static void removeAlbum(String[] args) {
         PreparedStatement stmt = null;
         Connection conn = null;

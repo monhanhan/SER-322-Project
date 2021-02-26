@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         // This is a scanner we use for user input.
         Scanner inputScanner = new Scanner(System.in);
         mainMenu(inputScanner, args);
@@ -43,7 +42,6 @@ public class Main {
         inputScanner.close();
         // Close the program.
         System.exit(0);
-
     }
 
     private static void printMainMenu() {
@@ -58,5 +56,4 @@ public class Main {
         System.out.println("5: Songs");
         System.out.println();
     }
-
 }
