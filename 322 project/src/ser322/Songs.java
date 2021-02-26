@@ -10,12 +10,15 @@ import java.sql.ResultSet;
 import java.util.Scanner;
 
 public class Songs {
+    private static Scanner scanner;
 
-    public static void artistMenu(Scanner inputScanner, String[] args) {
-        System.out.println("Welcome to the Artist menu");
+    public static void songMenu(Scanner inputScanner, String[] args) {
+        scanner = inputScanner;
+        
+        System.out.println("Welcome to the Songs menu");
         printArtistMenuOptions();
 
-        int inInt = Integer.parseInt(inputScanner.next());
+        int inInt = Integer.parseInt(scanner.next());
 
         while (inInt != 0) {
             if (inInt == 1) {
@@ -25,35 +28,34 @@ public class Songs {
                 searchSongName(args);
 
             } else if (inInt == 3) {
-                searchSongId(inputScanner, args);
+                searchSongId(args);
 
             } else if (inInt == 4) {
-                listArtists(inputScanner, args);
+                listArtists(args);
 
             } else if (inInt == 5) {
-                addSong(inputScanner, args);
+                addSong(args);
 
             } else if (inInt == 6) {
-                removeSong(inputScanner, args);
+                removeSong(args);
 
             } else if (inInt == 7) {
-                removeArtistSong(inputScanner, args);
+                removeArtistSong(args);
 
             } else if (inInt == 8) {
-                addArtistSong(inputScanner, args);
+                addArtistSong(args);
 
             } else if (inInt == 9) {
-                changeSongName(inputScanner, args);
+                changeSongName(args);
 
             } else {
-                System.out.println(
-                        "Sorry, you did not select a valid menu option.");
+                System.out.println("Sorry, you did not select a valid menu option.");
                 System.out.println();
             }
 
             printArtistMenuOptions();
 
-            inInt = Integer.parseInt(inputScanner.next());
+            inInt = Integer.parseInt(scanner.next());
         }
 
     }
@@ -64,15 +66,63 @@ public class Songs {
         System.out.println("1: List all songs");
         System.out.println("2: Search songs by name");
         System.out.println("3: Search songs by song ID");
-        System.out.println("4: See which artist have performed a song ");
+        System.out.println("4: See which artists have performed a song");
         System.out.println("5: Add a song");
         System.out.println("6: Remove a song");
         System.out.println("7: Remove an artist from a song");
         System.out.println("8: Add an artist to a song");
         System.out.println("9: Change the name of a song");
         System.out.println();
-
     }
+
+    private static void closeDBResources(ResultSet rs, PreparedStatement stmt, Connection conn) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch (Throwable t1) {
+            System.out.println("A problem closing db resources!");
+        }
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (Throwable t2) {
+            System.out.println("Oh-oh! Connection leaked!");
+        }
+    }
+
+    private static String promptString(String prompt) {
+        System.out.println(prompt);
+
+        // We need a buffered reader so that we can take input that has
+        // whitespace. When our scanner object gets closed it will close
+        // buffered reader as well since they both use system.in. We cannot
+        // close system.in without closing it for the entire program, so we
+        // shouldn't close it here.
+        BufferedReader stdin = new BufferedReader(
+                new InputStreamReader(System.in));
+
+        String value = "";
+
+        try {
+            value = stdin.readLine();
+        } catch (IOException e) {
+            System.out.println(
+                    "Something went wrong. The system is going to crash now. Will I dream? Daaaisy, Daaaaisy");
+        }
+
+        return value;
+    }
+
+    private static int promptInt(String prompt) {
+        System.out.println(prompt);
+        return scanner.nextInt();
+    }
+
     //method to handle option 1
     private static void listSongs(String[] args) {
         ResultSet rs = null;
@@ -104,27 +154,10 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
 
     }
-
 
 
     //method to handle option 2
@@ -180,35 +213,20 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
 
     }
+
     //method to handle option 3
-    private static void searchSongId(Scanner inputScanner, String[] args) {
+    private static void searchSongId(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
 
         System.out.println("Please type the ID of your song");
 
-        String artistId = inputScanner.next();
+        int song_id = Integer.parseInt(scanner.next());
         System.out.println();
 
         String _url = args[0];
@@ -221,9 +239,9 @@ public class Songs {
 
             // Step 3: Create a statement
             stmt = conn.prepareStatement(
-                    "SELECT *" + "FROM SONGS WHERE artist_id=?");
+                    "SELECT *" + "FROM SONGS WHERE song_id=?");
 
-            stmt.setString(1, song_id);
+            stmt.setInt(1, song_id);
 
             // Step 4: Make a query
             rs = stmt.executeQuery();
@@ -231,44 +249,27 @@ public class Songs {
             // Step 5: Display the results
             while (rs.next()) {
                 System.out.printf("%-15s", rs.getInt("song_id"));
-                System.out.printf("%-25s", rs.getInt("release_year"));
+                System.out.printf("%-15s", rs.getInt("release_year"));
                 System.out.printf("%-35s \n", rs.getString("name"));
                 System.out.println();
-
             }
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
 
     }
 
-//method to handle option 4
-    private static void listArtists(Scanner inputScanner, String[] args) {
+    //method to handle option 4
+    private static void listArtists(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
 
         System.out.println("Please type the ID of your song");
 
-        String artistId = inputScanner.next();
+        String artistId = scanner.next();
         System.out.println();
 
         String _url = args[0];
@@ -301,29 +302,13 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
 
     }
 
     //method to handle option 5
-    private static void addSong(Scanner inputScanner, String[] args) {
+    private static void addSong(String[] args) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -335,53 +320,22 @@ public class Songs {
         // buffered reader as well since they both use system.in. We cannot
         // close system.in without closing it for the entire program, so we
         // shouldn't close it here.
-        BufferedReader stdin = new BufferedReader(
-                new InputStreamReader(System.in));
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
         String songName = "";
-        int songId=null;
-        int releaseYear=1945;
-        try {
-            songName = stdin.readLine();
-            System.out.println();
-        } catch (IOException e) {
-            System.out.println(
-                    "Something went wrong with taking your song name. The system is going to crash now. Will I dream? Lo-lo-lo-lola");
-        }
+        int songId;
+        int releaseYear;
+
+
+        songName = stdin.readLine();
 
         System.out.println("Please type the year the song was released");
-        try {
-            songName = stdin.readLine();
-            ;
-            System.out.println();
-        } catch (IOException e) {
-            System.out.println(
-                    "Something went wrong with taking your release year. The system is going to crash now. Will I dream? Lo-lo-lo-lola");
-        try {
-            releaseYear = Integer.parseInt(inputScanner.next());
-        } catch (NumberFormatException exception) {
-            System.out.println(
-                "Something went wrong with taking your release year. The system is going to crash now because it thinks you did not  " 
-                +"enter a number");
-                }
+        releaseYear = Integer.parseInt(scanner.next());
 
 
         System.out.println("Please type the song Id number");
-        try {
-            songId = stdin.readLine();
-            ;
-            System.out.println();
-        } catch (IOException e) {
-            System.out.println(
-                    "Something went wrong with taking your song ID number. The system is going to crash now. Will I dream? Lo-lo-lo-lola");
-        try {
-            songId = Integer.parseInt(inputScanner.next());
-        } catch (NumberFormatException exception) {
-            System.out.println(
-                "Something went wrong with taking your song ID number. The system is going to crash now because it thinks you did not  " 
-                +"enter a number");
-                }
-        
+        songId = Integer.parseInt(stdin.readLine());
+
 
         String _url = args[0];
         try {
@@ -414,35 +368,17 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
-
     }
 
     /**
      * This removes an song and all its relations.(option 6)
      *
-     * @param inputScanner is a scanner for input
      * @param args         are the command line arguments that allow us to
      *                     connect to our database.
      */
-    private static void removeSong(Scanner inputScanner, String[] args) {
+    private static void removeSong (String[] args){
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
@@ -453,11 +389,11 @@ public class Songs {
                 "Please note: When you delete an song all of their relations get deleted as well");
         System.out.println();
 
-        int songId = Integer.parseInt(inputScanner.next());
+        int songId = Integer.parseInt(scanner.next());
 
         // This is where we remove all relations.
         removeAllSongRelations(songId, args);
-        
+
 
         String _url = args[0];
         try {
@@ -487,45 +423,27 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
-
     }
 
     /**
      * This method allows us to remove the relation between an artist and a song (option 7)
      *
-     * @param inputScanner takes user input
      * @param args         command line arguments that allows us to make a
      *                     database connection
      */
-    private static void removeArtistSong(Scanner inputScanner, String[] args) {
+    private static void removeArtistSong (String[] args){
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
 
         System.out.println("Please type the artist Id number");
-        int artistId = Integer.parseInt(inputScanner.next());
+        int artistId = Integer.parseInt(scanner.next());
         System.out.println();
 
         System.out.println("please type the song Id number");
-        int songId = Integer.parseInt(inputScanner.next());
+        int songId = Integer.parseInt(scanner.next());
         System.out.println();
 
         String _url = args[0];
@@ -558,25 +476,8 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
-
     }
 
     /**
@@ -584,21 +485,20 @@ public class Songs {
      * the relation already exists an error message is displayed and nothing is
      * done
      * (handles option 8)
-     * @param inputScanner is the scanner that takes user input
      * @param args         are the command line arguments that allow us to make
      *                     a connection
      */
-    private static void addArtistSong(Scanner inputScanner, String[] args) {
+    private static void addArtistSong (String[] args){
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
 
         System.out.println("Please type the artist Id number");
-        int artistId = Integer.parseInt(inputScanner.next());
+        int artistId = Integer.parseInt(scanner.next());
         System.out.println();
 
         System.out.println("please type the song Id number");
-        int songId = Integer.parseInt(inputScanner.next());
+        int songId = Integer.parseInt(scanner.next());
         System.out.println();
 
         String _url = args[0];
@@ -631,45 +531,24 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
-
     }
 
-    
-
-   
 
     /**
      * This method allows us to change the name of our song
      *  (option 9)
-     * @param inputScanner takes user input
      * @param args         is a command line argument that allows us to connect
      *                     to our database
      */
-    private static void changeSongName(Scanner inputScanner, String[] args) {
+    private static void changeSongName (String[] args){
         ResultSet rs = null;
         PreparedStatement stmt = null;
         Connection conn = null;
 
         System.out.println("Please type the song Id number");
-        int songId = Integer.parseInt(inputScanner.next());
+        int songId = Integer.parseInt(scanner.next());
         System.out.println();
 
         System.out.println("please type you song's new name");
@@ -720,27 +599,10 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
-
     }
-  
+
     /**
      * This is a helper function that will allow us to remove a song
      * completely from the system. This will erase all connections to artists when
@@ -750,10 +612,10 @@ public class Songs {
      * @param args     are the command line arguments that will allow us to make
      *                 a connection.
      */
-    private static void removeAllSongRelations(int songId, String[] args) {
+    private static void removeAllSongRelations ( int songId, String[] args){
         ResultSet rs = null;
         PreparedStatement stmt = null;
-        PreparedStatement stmt2=null;
+        PreparedStatement stmt2 = null;
         Connection conn = null;
 
         String _url = args[0];
@@ -769,7 +631,7 @@ public class Songs {
                     + "Where song_id = ?");
 
             stmt2 = conn.prepareStatement("DELETE HAS\n" + "FROM HAS\n"
-                    + "Where song_id = ?");        
+                    + "Where song_id = ?");
 
             stmt.setInt(1, song_Id);
             stmt2.setInt(1, song_Id);
@@ -790,25 +652,7 @@ public class Songs {
         } catch (Exception exc) {
             exc.printStackTrace();
         } finally { // ALWAYS clean up your DB resources
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (Throwable t1) {
-                System.out.println("A problem closing db resources!");
-            }
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Throwable t2) {
-                System.out.println("Oh-oh! Connection leaked!");
-            }
+            closeDBResources(rs, stmt, conn);
         }
-
     }
-
 }
